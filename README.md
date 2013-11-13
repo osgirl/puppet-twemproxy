@@ -24,7 +24,7 @@ This module manages [Twemproxy](http://www.github.com/twitter/twemproxy) package
         }
       ],
       port       => 22121,
-      statsport: => 22122
+      statsport  => 22122
   }
 </pre>
 
