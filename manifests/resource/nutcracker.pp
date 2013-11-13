@@ -16,6 +16,13 @@ define twemproxy::resource::nutcracker (
   $twemproxy_timeout    = '300'
 ) {
 
+
+   $service_template_os_specific = $osfamily ? {
+        'RedHat'   => 'twemproxy/nutcracker-redhat.erb',
+        'Debian'   => 'twemproxy/nutcracker.erb',
+        default    => 'twemproxy/nutcracker.erb',
+    }
+
   File {
     owner  => 'root',
     group  => 'root',
@@ -63,10 +70,12 @@ define twemproxy::resource::nutcracker (
   file { "/etc/init.d/${name}":
     ensure  => "${ensure_real}",
     mode    => '0755',
-    content => template('twemproxy/nutcracker.erb'),
+    content => template(${service_template_os_specific}),
     notify  => Exec["reload-nutcracker-${name}"],
     require => [ File["$log_dir"], File["$pid_dir"] ]
   }
+
+
 
   # Reloads nutcracker if either the init or the config file has change.
   exec { "/etc/init.d/${name} restart":
