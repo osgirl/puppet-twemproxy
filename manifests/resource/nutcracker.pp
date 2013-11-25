@@ -71,7 +71,7 @@ define twemproxy::resource::nutcracker (
   file { "/etc/init.d/${name}":
     ensure  => "${ensure_real}",
     mode    => '0755',
-    content => template(${service_template_os_specific}),
+    content => template("${service_template_os_specific}"),
     notify  => Exec["reload-nutcracker-${name}"],
     require => [ File["$log_dir"], File["$pid_dir"] ]
   }
