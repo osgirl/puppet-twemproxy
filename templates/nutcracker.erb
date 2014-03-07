@@ -1,22 +1,22 @@
 #!/bin/sh
 ### BEGIN INIT INFO
-# Provides:          <%= name %>
+# Provides:          <%= @name %>
 # Required-Start:    $network $remote_fs $local_fs
 # Required-Stop:     $network $remote_fs $local_fs
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Stop/start nutcracker <%= name %>
+# Short-Description: Stop/start nutcracker <%= @name %>
 ### END INIT INFO
 
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
-DESC=<%= name %>
-NAME=<%= name %>
-CONFFILE=/etc/nutcracker/<%= name %>.yml
-LOGFILE=/var/log/nutcracker/<%= name %>.log
+DESC=<%= @name %>
+NAME=<%= @name %>
+CONFFILE=/etc/nutcracker/<%= @name %>.yml
+LOGFILE=/var/log/nutcracker/<%= @name %>.log
 DAEMON=/usr/local/bin/nutcracker
 PIDFILE=/var/run/nutcracker/$NAME.pid
-DAEMON_ARGS="-c $CONFFILE -o $LOGFILE -p $PIDFILE -s <%= statsport %> -d"
-#DAEMON_ARGS="-c $CONFFILE -p $PIDFILE -s <%= statsport %> -d"
+DAEMON_ARGS="-c $CONFFILE -o $LOGFILE -p $PIDFILE -s <%= @statsport %> -d"
+#DAEMON_ARGS="-c $CONFFILE -p $PIDFILE -s <%= @statsport %> -d"
 SCRIPTNAME=/etc/init.d/$NAME
 
 [ -x $DAEMON ] || exit 0
