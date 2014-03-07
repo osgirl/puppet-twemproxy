@@ -1,23 +1,23 @@
 #!/bin/sh
 #chkconfig: 2345 95 20
    # description: Nutcracker
-   # processname: <%= name %>
+   # processname: <%= @name %>
 
 ### BEGIN INIT INFO
-# Provides:          <%= name %>
+# Provides:          <%= @name %>
 # Required-Start:    $network $remote_fs $local_fs
 # Required-Stop:     $network $remote_fs $local_fs
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Stop/start nutcracker <%= name %>.
+# Short-Description: Stop/start nutcracker <%= @name %>.
 ### END INIT INFO
 
 ATH=/sbin:/usr/sbin:/bin:/usr/bin
-DESC=<%= name %>
-NAME=<%= name %>
+DESC=<%= @name %>
+NAME=<%= @name %>
 PROCESS=nutcracker
-CONFFILE=/etc/nutcracker/<%= name %>.yml
-LOGFILE=/var/log/nutcracker/<%= name %>.log
+CONFFILE=/etc/nutcracker/<%= @name %>.yml
+LOGFILE=/var/log/nutcracker/<%= @name %>.log
 DAEMON=/usr/local/bin/nutcracker
 PIDFILE=/var/run/nutcracker/$NAME.pid
 DAEMON_ARGS="-c $CONFFILE -o $LOGFILE -p $PIDFILE -s 22122 -d"
