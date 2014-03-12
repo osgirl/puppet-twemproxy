@@ -1,11 +1,11 @@
-name    'wuakitv-twemproxy'
-version '0.1.0'
+name    'puppet-twemproxy'
+version '1.0.2'
 source 'UNKNOWN'
 author 'wuakitv'
 license 'MIT License'
 summary 'This modules helps configure Twemproxy.'
-description 'This modules compiles from source twemproxy.'
-project_page 'https://github.com/wuakitv/puppet-twemproxy'
+description 'This modules compiles Twemproxy from source.'
+project_page 'https://github.com/MSMFG/puppet-twemproxy'
 
-## Add dependencies, if any:
-# dependency 'camptocamp/puppet-monit'
+## Forked from
+# project_page 'https://github.com/wuakitv/puppet-twemproxy'
