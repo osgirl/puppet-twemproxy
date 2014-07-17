@@ -76,14 +76,19 @@ define twemproxy::resource::nutcracker (
     require => [ File["$log_dir"], File["$pid_dir"] ]
   }
 
-
-
   # Reloads nutcracker if either the init or the config file has change.
   exec { "/etc/init.d/${name} restart":
     command     => "/etc/init.d/${name} restart",
     refreshonly => true,
     alias       => "reload-nutcracker-${name}",
     require     => [ File["/etc/init.d/${name}"], File["/etc/nutcracker/${name}.yml"] ]
-    
+  }
+
+  # Ensure the service is running
+  service { "${name}":
+    ensure    => running,
+    enable    => true,
+    hasstatus => false,
+    pattern   => "/usr/local/bin/nutcracker -c /etc/nutcracker/${name}.yml",
   }
 }
