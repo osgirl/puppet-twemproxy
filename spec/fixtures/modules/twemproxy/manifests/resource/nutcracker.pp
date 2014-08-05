@@ -7,7 +7,7 @@ define twemproxy::resource::nutcracker (
   $members              = '',
   $nutcracker_hash      = 'fnv1a_64',
   $redis                = true,
-  $server_retry_timeout = '2000',
+  $server_retry_timeout = '600000',
   $server_failure_limit = '3',
   $statsport            = '22121'
 ) {
