@@ -1,7 +1,7 @@
 # = Class for Twemproxy installation
 # TODO: Document the installation
 class twemproxy::install (
-  $version        = '0.2.4',
+  $version        = '0.3.0',
   $prefix         = '/usr/local',
   $debug_mode     = true,
   $debug_opts     = 'full',
