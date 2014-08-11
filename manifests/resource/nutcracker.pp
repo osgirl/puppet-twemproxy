@@ -90,5 +90,6 @@ define twemproxy::resource::nutcracker (
     enable    => true,
     hasstatus => false,
     pattern   => "/usr/local/bin/nutcracker -c /etc/nutcracker/${name}.yml",
+    require   => [ File["/etc/init.d/${name}"], File["/etc/nutcracker/${name}.yml"] ]
   }
 }
