@@ -64,7 +64,10 @@ define twemproxy::resource::nutcracker (
     ensure  => "${ensure_real}",
     content => template('twemproxy/pool.erb',
                         'twemproxy/members.erb'),
-    notify  => Exec["reload-nutcracker-${name}"]
+    notify  => [
+      Exec["reload-nutcracker-${name}"],
+      Exec["ensure-nutcracker-${name}"]
+    ],
   }
 
   # Creates nutcracker init for the current pool
@@ -72,7 +75,10 @@ define twemproxy::resource::nutcracker (
     ensure  => "${ensure_real}",
     mode    => '0755',
     content => template("${service_template_os_specific}"),
-    notify  => Exec["reload-nutcracker-${name}"],
+    notify  => [
+      Exec["reload-nutcracker-${name}"],
+      Exec["ensure-nutcracker-${name}"]
+    ],
     require => [ File["$log_dir"], File["$pid_dir"] ]
   }
 
@@ -88,8 +94,9 @@ define twemproxy::resource::nutcracker (
   service { "${name}":
     ensure    => running,
     enable    => true,
+    alias     => "ensure-nutcracker-${name}",
     hasstatus => false,
     pattern   => "/usr/local/bin/nutcracker -c /etc/nutcracker/${name}.yml",
-    require   => [ File["/etc/init.d/${name}"], File["/etc/nutcracker/${name}.yml"] ]
+    require   => [ File["/etc/init.d/${name}"], File["/etc/nutcracker/${name}.yml"], Exec["reload-nutcracker-${name}"] ]
   }
 }
