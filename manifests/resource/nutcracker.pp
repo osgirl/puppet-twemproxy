@@ -90,13 +90,4 @@ define twemproxy::resource::nutcracker (
     require     => [ File["/etc/init.d/${name}"], File["/etc/nutcracker/${name}.yml"] ]
   }
 
-  # Ensure the service is running
-  service { "${name}":
-    ensure    => running,
-    enable    => true,
-    alias     => "ensure-nutcracker-${name}",
-    hasstatus => false,
-    pattern   => "/usr/local/bin/nutcracker -c /etc/nutcracker/${name}.yml",
-    require   => [ File["/etc/init.d/${name}"], File["/etc/nutcracker/${name}.yml"], Exec["reload-nutcracker-${name}"] ]
-  }
 }

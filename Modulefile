@@ -1,5 +1,5 @@
 name    'puppet-twemproxy'
-version '1.0.6'
+version '1.0.7'
 source 'UNKNOWN'
 author 'wuakitv'
 license 'MIT License'
