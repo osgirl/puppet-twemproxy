@@ -65,8 +65,7 @@ define twemproxy::resource::nutcracker (
     content => template('twemproxy/pool.erb',
                         'twemproxy/members.erb'),
     notify  => [
-      Exec["reload-nutcracker-${name}"],
-      Service["ensure-nutcracker-${name}"]
+      Exec["reload-nutcracker-${name}"]
     ],
   }
 
@@ -76,8 +75,7 @@ define twemproxy::resource::nutcracker (
     mode    => '0755',
     content => template("${service_template_os_specific}"),
     notify  => [
-      Exec["reload-nutcracker-${name}"],
-      Service["ensure-nutcracker-${name}"]
+      Exec["reload-nutcracker-${name}"]
     ],
     require => [ File["$log_dir"], File["$pid_dir"] ]
   }
