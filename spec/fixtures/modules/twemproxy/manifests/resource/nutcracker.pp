@@ -18,11 +18,6 @@ define twemproxy::resource::nutcracker (
     mode   => '0644'
   }
 
-  $ensure_real = $ensure ? {
-    'absent' => absent,
-    default  => file,
-  }
-
   # Ensure nutcracker config directory exists
   if ! defined(File['/etc/nutcracker']) {
     file { '/etc/nutcracker':
@@ -33,7 +28,7 @@ define twemproxy::resource::nutcracker (
 
   # Creates nutcracker config YML combining two templates members and pool.
   file { "/etc/nutcracker/${name}.yml":
-    ensure  => "${ensure_real}",
+    ensure  => present,
     content => template('twemproxy/pool.erb',
                         'twemproxy/members.erb'),
     notify  => Exec["reload-nutcracker"]
@@ -41,7 +36,7 @@ define twemproxy::resource::nutcracker (
 
   # Creates nutcracker init for the current pool
   file { "/etc/init.d/${name}":
-    ensure  => "${ensure_real}",
+    ensure  => present,
     mode    => '0755',
     content => template('twemproxy/nutcracker')
   }
