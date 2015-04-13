@@ -1,0 +1,56 @@
+{
+  "name": "puppet-twemproxy",
+  "version": "1.1.0",
+  "author": "Paul Gilligan <Paul.Gilligan@moneysupermarket.com>",
+  "summary": "This module installs and configures Twemproxy.",
+  "license": "Apache-2.0",
+  "source": "https://github.com/MSMFG/puppet-twemproxy",
+  "project_page": "https://github.com/MSMFG/puppet-twemproxy",
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "12.04",
+        "14.04"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "pe",
+      "version_requirement": "3.x"
+    },
+    {
+      "name": "puppet",
+      "version_requirement": "3.x"
+    }
+  ],
+  "description": "This is a puppet module installs and configures Twemproxy, for the MSM trustrap based cloud environments.",
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 4.3.2"
+    }
+  ]
+}
