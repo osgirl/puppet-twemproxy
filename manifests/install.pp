@@ -10,6 +10,8 @@ class twemproxy::install (
   include twemproxy::package
   include twemproxy::autoconf
 
+  Exec { path => [ '/bin/', '/sbin/' , '/usr/bin/', '/usr/sbin/' ] }
+
   $prefix = $twemproxy::params::default_prefix
 
   validate_string($version)
@@ -19,10 +21,11 @@ class twemproxy::install (
 
   $resource = "twemproxy-${version}"
 
+  # installs /usr/sbin/nutcracker
   if $debug_mode {
-    $cfgcmd = "CFLAGS=${cflags_opts} ./configure --enable-debug=${debug_opts}"
+    $cfgcmd = "CFLAGS=\"${cflags_opts}\" ./configure --prefix=/usr --enable-debug=${debug_opts}"
   } else {
-    $cfgcmd = "CFLAGS=${cflags_opts} ./configure"
+    $cfgcmd = "CFLAGS=\"${cflags_opts}\" ./configure --prefix=/usr"
   }
 
   file { "${prefix}/src":
@@ -35,26 +38,28 @@ class twemproxy::install (
   exec { "tar-xvfz-${resource}":
     command => "tar xvzf ${resource}.tar.gz",
     cwd     => "${prefix}/src",
-    creates => "${prefix}/src/${resource}",
-    path    => '/bin/:/usr/bin'
+    creates => "${prefix}/src/${resource}"
   } ->
   exec { "autoconf-${resource}":
-    command => 'autoreconf -fvi',
-    cwd     => "${prefix}/src/${resource}",
-    creates => "${prefix}/src/${resource}/configure",
-    path    => '/bin/:/usr/bin'
+    command   => 'autoreconf -fvi',
+    provider  => shell,
+    logoutput => false,
+    cwd       => "${prefix}/src/${resource}",
+    creates   => "${prefix}/src/${resource}/configure",
+    require   => Anchor['twemproxy::autoconf::end']
   } ->
   exec { "configure-${resource}":
-    command => $cfgcmd,
-    cwd     => "${prefix}/src/${resource}",
-    creates => "${prefix}/src/${resource}/config.status",
-    path    => '/bin/:/usr/bin'
+    command   => $cfgcmd,
+    provider  => shell,
+    logoutput => false,
+    cwd       => "${prefix}/src/${resource}",
+    creates   => "${prefix}/src/${resource}/config.status"
   } ->
   exec { "make-${resource}":
-    command => 'make && make install',
-    cwd     => "${prefix}/src/${resource}",
-    creates => "${prefix}/src/${resource}/src/nutcracker",
-    path    => '/bin/:/usr/bin'
+    command   => 'make && make install',
+    provider  => shell,
+    logoutput => false,
+    cwd       => "${prefix}/src/${resource}",
+    creates   => "${prefix}/src/${resource}/src/nutcracker"
   }
-
 }

@@ -21,8 +21,7 @@ describe 'twemproxy::autoconf', :type=>'class' do
       :kernel => 'Linux'
     }}
         
-    it { should compile.with_all_deps }        
-  
+    it { should compile.with_all_deps }          
     it { should create_file('/usr/local/src/autoconf-2.64.tar.gz') }
 
   end
