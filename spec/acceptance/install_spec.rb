@@ -26,12 +26,19 @@ describe 'default twemproxy install testing', :unless => UNSUPPORTED_PLATFORMS.i
     it 'should create autoconf-2.64 data directory' do
       shell("test -d /usr/local/src/autoconf-2.64", :acceptable_exit_codes => 0)
     end
+    it 'should install autoconf-2.64 to the correct location' do
+      shell("test -f /usr/bin/autoconf", :acceptable_exit_codes => 0)
+    end
   end
 
   describe 'should install twemproxy-0.4.0' do
     it 'should create twemproxy-0.4.0 data directory' do
       shell("test -d /usr/local/src/twemproxy-0.4.0", :acceptable_exit_codes => 0)
     end
+    it 'should install nutcracker to the correct location' do
+      shell("test -f /usr/sbin/nutcracker", :acceptable_exit_codes => 0)
+    end
   end
+
 
 end
