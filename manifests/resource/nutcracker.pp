@@ -15,24 +15,26 @@ define twemproxy::resource::nutcracker (
   $twemproxy_timeout    = '300'
 ) {
 
+  include twemproxy::install
+
   if ! defined(File['/etc/nutcracker']) {
     file { '/etc/nutcracker':
-      ensure  => 'directory',
-      mode    => '0755',
+      ensure => 'directory',
+      mode   => '0755'
     }
   }
 
-  if ! defined(File["${log_dir}"]) {
-    file { "${log_dir}":
-      ensure  => 'directory',
-      mode    => '0755',
+  if ! defined(File[$log_dir]) {
+    file { $log_dir:
+      ensure => 'directory',
+      mode   => '0755'
     }
   }
 
-  if ! defined(File["${pid_dir}"]) {
-    file { "${pid_dir}":
-      ensure  => 'directory',
-      mode    => '0755',
+  if ! defined(File[$pid_dir]) {
+    file { $pid_dir:
+      ensure => 'directory',
+      mode   => '0755'
     }
   }
 
@@ -41,6 +43,11 @@ define twemproxy::resource::nutcracker (
     content => template('twemproxy/pool.erb', 'twemproxy/members.erb')
   }
 
-
+  class { 'runit':
+    filestore    => 'puppet:///modules/twemproxy',
+    package_file => 'runit-2.1.2-1.el6.x86_64.rpm',
+    users        => {},
+    workspace    => '/tmp/runit'
+  }
 
 }
