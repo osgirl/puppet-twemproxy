@@ -23,7 +23,10 @@ define twemproxy::resource::nutcracker (
   include stdlib
   include twemproxy::install
 
-  $service_name = $::twemproxy::params::default_service_name
+  #
+  # installed service name derived from $name
+  # i.e. File[/etc/init.d/nutcracker]/notify: subscribes to Service[twemproxy]
+  #
 
   if !is_integer($port) {
     fail('$port must be an integer.')
@@ -52,7 +55,7 @@ define twemproxy::resource::nutcracker (
   validate_bool($service_manage)
 
   class { '::twemproxy::service':
-    service_name   => $service_name,
+    service_name   => $name,
     service_enable => $service_enable,
     service_manage => $service_manage,
     service_ensure => $service_ensure
@@ -85,16 +88,16 @@ define twemproxy::resource::nutcracker (
     default  => 'twemproxy/nutcracker.erb',
   }
 
-  file { "/etc/nutcracker/${service_name}.yml":
+  file { "/etc/nutcracker/${name}.yml":
     ensure  => present,
     content => template('twemproxy/pool.erb', 'twemproxy/members.erb')
   } ->
-  file { "/etc/init.d/${service_name}":
+  file { "/etc/init.d/${name}":
     ensure  => present,
     mode    => '0755',
     content => template($service_template_os_specific),
-    require => [ File[$log_dir], File[$pid_dir] ]
+    require => [ Anchor['twemproxy::install::end'], File[$log_dir], File[$pid_dir] ]
   } ~>
-  Service['nutcracker']
+  Service[$::twemproxy::params::default_service_name]
 
 }

@@ -62,7 +62,7 @@ restart() {
 }
 
 rh_status() {
-        status $prog
+        status -p $PIDFILE $prog
 }
 
 rh_status_q() {

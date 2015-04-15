@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-$node_name = 'test1.domain'
+$node_name = 'nutcracker'
 
 describe 'twemproxy::resource::nutcracker', :type=>'define' do
 
@@ -22,7 +22,6 @@ describe 'twemproxy::resource::nutcracker', :type=>'define' do
     }}
 
     let(:params) {{
-      :name                 => 'nutcracker',
       :port                 => 7777,
       :nutcracker_hash      => 'one_at_a_time',
       :nutcracker_hash_tag  => 'banana',
@@ -59,13 +58,17 @@ describe 'twemproxy::resource::nutcracker', :type=>'define' do
     it { should contain_class('twemproxy::install') }
     it { should contain_class('twemproxy::service') }
 
-    it { is_expected.to contain_service("nutcracker").with(
+    it { is_expected.to contain_service("twemproxy").with(
        'name'   => 'nutcracker',
        'ensure' => 'running',
        'enable' => 'true'
      )
     }   
   
+    it { should create_file('/var/log/nutcracker') }
+    it { should create_file('/var/run/nutcracker') }
+
+    it { should create_file('/etc/nutcracker') }
     it { should create_file('/etc/nutcracker/nutcracker.yml') }
     it { should contain_file('/etc/nutcracker/nutcracker.yml').with_content(/nutcracker:/) }    
     it { should contain_file('/etc/nutcracker/nutcracker.yml').with_content(/  listen: 0.0.0.0:7777/) }    
@@ -80,7 +83,11 @@ describe 'twemproxy::resource::nutcracker', :type=>'define' do
 
     it { should contain_file('/etc/nutcracker/nutcracker.yml').with_content(/    - 127.0.0.1:6390:1 server1/) } 
     it { should contain_file('/etc/nutcracker/nutcracker.yml').with_content(/    - 127.0.0.1:6391:1 server2/) } 
-    it { should contain_file('/etc/nutcracker/nutcracker.yml').with_content(/    - 127.0.0.1:6392:1 server3/) }     
+    it { should contain_file('/etc/nutcracker/nutcracker.yml').with_content(/    - 127.0.0.1:6392:1 server3/) }    
+
+    it { should create_file('/etc/init.d/nutcracker') }
+    it { should contain_file('/etc/init.d/nutcracker').with_content(/NAME=nutcracker/) }    
+         
   end
 
 end

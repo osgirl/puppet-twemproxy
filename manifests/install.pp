@@ -10,6 +10,9 @@ class twemproxy::install (
   include twemproxy::package
   include twemproxy::autoconf
 
+  anchor { 'twemproxy::install::begin': }
+  anchor { 'twemproxy::install::end': }
+
   Exec { path => [ '/bin/', '/sbin/' , '/usr/bin/', '/usr/sbin/' ] }
 
   $prefix = $twemproxy::params::default_prefix
@@ -29,6 +32,7 @@ class twemproxy::install (
     $cfgcmd = "CFLAGS=\"${cflags_opts}\" ./configure --prefix=/usr"
   }
 
+  Anchor['twemproxy::install::begin'] ->
   file { "${prefix}/src":
     ensure  => 'directory'
   } ->
@@ -62,5 +66,7 @@ class twemproxy::install (
     logoutput => false,
     cwd       => "${prefix}/src/${resource}",
     creates   => "${prefix}/src/${resource}/src/nutcracker"
-  }
+  } ->
+  Anchor['twemproxy::install::end']
+
 }

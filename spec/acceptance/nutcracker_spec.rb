@@ -13,32 +13,55 @@ describe 'default nutcracker service testing', :unless => UNSUPPORTED_PLATFORMS.
           }
         }
 
-        twemproxy::resource::nutcracker { 'test.a.nut.msm.internal':
-          auto_eject_hosts     => false,
-          distribution         => 'ketama',
-          ensure               => 'present',
-          log_dir              => '/var/log/nutcracker',
-          members              => '',
+        twemproxy::resource::nutcracker { 'redis-twemproxy':
+
+          port                 => '6379',
           nutcracker_hash      => 'fnv1a_64',
           nutcracker_hash_tag  => '',
+          distribution         => 'ketama',
+          twemproxy_timeout    => '300',
+
+          auto_eject_hosts     => false,
+          server_retry_timeout => '500',
+          server_failure_limit => '1',
+
+          log_dir              => '/var/log/nutcracker',
           pid_dir              => '/var/run/nutcracker',
-          port                 => '22111',
           redis                => true,
-          server_retry_timeout => '2000',
-          server_failure_limit => '3',
-          statsport            => '21111',
-          twemproxy_timeout    => '300'
+          statsport            => '22222',
+
+          members              =>  [
+           { 
+              'ip'         => '127.0.0.1',
+              'name'       => 'server1',
+              'redis_port' => '6390',
+              'weight'     => '1'
+            },
+            { 
+              'ip'         => '127.0.0.1',
+              'name'       => 'server2',
+              'redis_port' => '6391',
+              'weight'     => '1'
+            },
+            { 
+              'ip'         => '127.0.0.1',
+              'name'       => 'server3',
+              'redis_port' => '6392',
+              'weight'     => '1'
+            }
+          ] 
         }        
-        
       EOS
 
       apply_manifest(pp, :catch_failures => true)
 
     end
-  end
 
-  describe 'should run service nutcracker' do
+  describe service('redis-twemproxy') do
+    it { is_expected.to be_enabled }
+    it { is_expected.to be_running }
   end
-
+   
+  end
 
 end
