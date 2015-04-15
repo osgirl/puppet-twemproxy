@@ -51,6 +51,10 @@
     {
       "name": "puppetlabs/stdlib",
       "version_requirement": ">= 4.3.2"
-    }   
+    },
+    {
+      "name": "maestrodev/wget",
+      "version_requirement": ">= 1.5.6"
+    }       
   ]
 }
