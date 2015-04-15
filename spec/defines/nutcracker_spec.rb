@@ -57,6 +57,14 @@ describe 'twemproxy::resource::nutcracker', :type=>'define' do
         
     it { should compile.with_all_deps }        
     it { should contain_class('twemproxy::install') }
+    it { should contain_class('twemproxy::service') }
+
+    it { is_expected.to contain_service("nutcracker").with(
+       'name'   => 'nutcracker',
+       'ensure' => 'running',
+       'enable' => 'true'
+     )
+    }   
   
     it { should create_file('/etc/nutcracker/nutcracker.yml') }
     it { should contain_file('/etc/nutcracker/nutcracker.yml').with_content(/nutcracker:/) }    

@@ -13,11 +13,17 @@ define twemproxy::resource::nutcracker (
   $log_dir              = '/var/log/nutcracker',
   $pid_dir              = '/var/run/nutcracker',
   $statsport            = '21111',
-  $members              = undef
+  $members              = undef,
+
+  $service_enable       = true,
+  $service_manage       = true,
+  $service_ensure       = 'running'
 ) {
 
   include stdlib
   include twemproxy::install
+
+  $service_name = $::twemproxy::params::default_service_name
 
   if !is_integer($port) {
     fail('$port must be an integer.')
@@ -42,6 +48,15 @@ define twemproxy::resource::nutcracker (
     fail('$statsport must be an integer.')
   }
   validate_array($members)
+  validate_bool($service_enable)
+  validate_bool($service_manage)
+
+  class { '::twemproxy::service':
+    service_name   => $service_name,
+    service_enable => $service_enable,
+    service_manage => $service_manage,
+    service_ensure => $service_ensure
+  }
 
   if ! defined(File['/etc/nutcracker']) {
     file { '/etc/nutcracker':
@@ -70,15 +85,16 @@ define twemproxy::resource::nutcracker (
     default  => 'twemproxy/nutcracker.erb',
   }
 
-  file { "/etc/nutcracker/${name}.yml":
+  file { "/etc/nutcracker/${service_name}.yml":
     ensure  => present,
     content => template('twemproxy/pool.erb', 'twemproxy/members.erb')
   } ->
-  file { "/etc/init.d/${name}":
+  file { "/etc/init.d/${service_name}":
     ensure  => present,
     mode    => '0755',
     content => template($service_template_os_specific),
     require => [ File[$log_dir], File[$pid_dir] ]
-  }
+  } ~>
+  Service['nutcracker']
 
 }
