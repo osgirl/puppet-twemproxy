@@ -32,10 +32,27 @@ describe 'twemproxy::resource::nutcracker', :type=>'define' do
       :server_retry_timeout => 1000,
       :server_failure_limit => 5,
       :redis                => true,
-
-
-      :members              => {}
- 
+      :members => [
+           { 
+              'ip'         => '127.0.0.1',
+              'name'       => 'server1',
+              'redis_port' => '6390',
+              'weight'     => '1'
+            },
+            { 
+              'ip'         => '127.0.0.1',
+              'name'       => 'server2',
+              'redis_port' => '6391',
+              'weight'     => '1'
+            },
+            { 
+              'ip'         => '127.0.0.1',
+              'name'       => 'server3',
+              'redis_port' => '6392',
+              'weight'     => '1'
+            }
+      ]
+        
     }}     
         
     it { should compile.with_all_deps }        
@@ -53,6 +70,9 @@ describe 'twemproxy::resource::nutcracker', :type=>'define' do
     it { should contain_file('/etc/nutcracker/nutcracker.yml').with_content(/  server_failure_limit: 5/) } 
     it { should contain_file('/etc/nutcracker/nutcracker.yml').with_content(/  redis: true/) } 
 
+    it { should contain_file('/etc/nutcracker/nutcracker.yml').with_content(/    - 127.0.0.1:6390:1 server1/) } 
+    it { should contain_file('/etc/nutcracker/nutcracker.yml').with_content(/    - 127.0.0.1:6391:1 server2/) } 
+    it { should contain_file('/etc/nutcracker/nutcracker.yml').with_content(/    - 127.0.0.1:6392:1 server3/) }     
   end
 
 end

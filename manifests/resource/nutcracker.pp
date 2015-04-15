@@ -41,7 +41,7 @@ define twemproxy::resource::nutcracker (
   if !is_integer($statsport) {
     fail('$statsport must be an integer.')
   }
-  validate_hash($members)
+  validate_array($members)
 
   if ! defined(File['/etc/nutcracker']) {
     file { '/etc/nutcracker':
