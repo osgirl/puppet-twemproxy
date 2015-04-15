@@ -30,7 +30,7 @@ describe 'twemproxy::resource::nutcracker', :type=>'define' do
       :auto_eject_hosts     => false,
       :server_retry_timeout => 1000,
       :server_failure_limit => 5,
-      :redis                => true,
+      :statsport            => 22222,
       :members => [
            { 
               'ip'         => '127.0.0.1',
@@ -87,6 +87,7 @@ describe 'twemproxy::resource::nutcracker', :type=>'define' do
 
     it { should create_file('/etc/init.d/nutcracker') }
     it { should contain_file('/etc/init.d/nutcracker').with_content(/NAME=nutcracker/) }    
+    it { should contain_file('/etc/init.d/nutcracker').with_content(/ -s 2222 -d"/) }    
          
   end
 

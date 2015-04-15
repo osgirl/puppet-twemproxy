@@ -26,10 +26,11 @@ class twemproxy::install (
 
   # installs /usr/sbin/nutcracker
   # this must match the service templates
+  # ** could not get logging to work with any options **
   if $debug_mode {
     $cfgcmd = "CFLAGS=\"${cflags_opts}\" ./configure --prefix=/usr --enable-debug=${debug_opts}"
   } else {
-    $cfgcmd = "CFLAGS=\"${cflags_opts}\" ./configure --prefix=/usr"
+    $cfgcmd = "CFLAGS=\"${cflags_opts}\" ./configure --prefix=/usr --enable-debug=log"
   }
 
   Anchor['twemproxy::install::begin'] ->

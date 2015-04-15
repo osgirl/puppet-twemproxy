@@ -12,7 +12,7 @@
 # Short-Description: Stop/start nutcracker <%= @name %>.
 ### END INIT INFO
 
-ATH=/sbin:/usr/sbin:/bin:/usr/bin
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC=<%= @name %>
 NAME=<%= @name %>
 PROCESS=nutcracker
@@ -20,10 +20,9 @@ CONFFILE=/etc/nutcracker/<%= @name %>.yml
 LOGFILE=/var/log/nutcracker/<%= @name %>.log
 DAEMON=/usr/sbin/nutcracker
 PIDFILE=/var/run/nutcracker/$NAME.pid
-DAEMON_ARGS="-c $CONFFILE -o $LOGFILE -p $PIDFILE -s 22122 -d"
+DAEMON_ARGS="-v 15 -c $CONFFILE -o $LOGFILE -p $PIDFILE -s <%= @statsport %> -d"
 #DAEMON_ARGS="-c $CONFFILE -p $PIDFILE -s 22122 -d"
 SCRIPTNAME=/etc/init.d/$NAME
-
 
 # Source function library.
 . /etc/rc.d/init.d/functions
@@ -40,7 +39,7 @@ start() {
         [ -f $LOGFILE ] || touch $LOGFILE
 
         echo -n $"Starting $NAME: "
-        $DAEMON -c $CONFFILE  >> $LOGFILE &
+        $DAEMON $DAEMON_ARGS  >> $LOGFILE
         RETVAL=$?
         echo
         [ $RETVAL -eq 0 ]

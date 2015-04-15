@@ -70,29 +70,37 @@ describe 'default nutcracker service testing', :unless => UNSUPPORTED_PLATFORMS.
 
       apply_manifest(pp, :catch_failures => true)
 
-      shell("ls -l /var/log/nutcracker")
+      shell("cat /var/log/nutcracker/redis-twemproxy.log")
 
     end
 
-  describe service('redis_6390') do
-    it { is_expected.to be_enabled }
-    it { is_expected.to be_running }
-  end
+    describe service('redis_6390') do
+      it { is_expected.to be_enabled }
+      it { is_expected.to be_running }
+    end
 
-  describe service('redis_6391') do
-    it { is_expected.to be_enabled }
-    it { is_expected.to be_running }
-  end
+    describe service('redis_6391') do
+      it { is_expected.to be_enabled }
+      it { is_expected.to be_running }
+    end
 
-  describe service('redis_6392') do
-    it { is_expected.to be_enabled }
-    it { is_expected.to be_running }
-  end
+    describe service('redis_6392') do
+      it { is_expected.to be_enabled }
+      it { is_expected.to be_running }
+    end
 
-  describe service('redis-twemproxy') do
-    it { is_expected.to be_enabled }
-    it { is_expected.to be_running }
-  end
+    describe service('redis-twemproxy') do
+      it { is_expected.to be_enabled }
+    #  it { is_expected.to be_running }
+    end
+
+    describe port('6379') do
+      it { should be_listening }
+    end
+
+    describe port('22222') do
+     # it { should be_listening }
+    end
    
   end
 
