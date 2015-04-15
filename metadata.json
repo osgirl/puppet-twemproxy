@@ -51,10 +51,6 @@
     {
       "name": "puppetlabs/stdlib",
       "version_requirement": ">= 4.3.2"
-    },
-    {
-      "name": "erwbgy/runit",
-      "version_requirement": ">= 0.4.2"
-    }    
+    }   
   ]
 }

@@ -31,6 +31,26 @@ describe 'twemproxy::install', :type=>'class' do
     it { should create_file('/usr/local/src') }
     it { should create_file('/usr/local/src/twemproxy-0.4.0.tar.gz') }
 
+    it { should contain_exec('tar-xvfz-twemproxy-0.4.0') }
+    it { should contain_exec('autoconf-twemproxy-0.4.0') }
+    it { should contain_exec('configure-twemproxy-0.4.0') }
+    it { should contain_exec('make-twemproxy-0.4.0') }
+
+  end
+
+  context 'on a Centos 6.5 OS with debug true' do
+    let(:facts) {{
+      :osfamily => 'RedHat',
+      :operatingsystem => 'Centos',
+      :operatingsystemrelease => '6.5',
+      :kernel => 'Linux'
+    }}
+    let(:params) {{
+      :debug_mode   =>  true
+    }}      
+            
+    it { should compile.with_all_deps }        
+
   end
 
 end

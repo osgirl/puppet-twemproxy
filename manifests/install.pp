@@ -22,6 +22,7 @@ class twemproxy::install (
   $resource = "twemproxy-${version}"
 
   # installs /usr/sbin/nutcracker
+  # this must match the service templates
   if $debug_mode {
     $cfgcmd = "CFLAGS=\"${cflags_opts}\" ./configure --prefix=/usr --enable-debug=${debug_opts}"
   } else {
