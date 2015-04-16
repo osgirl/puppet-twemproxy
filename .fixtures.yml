@@ -1,7 +1,8 @@
 fixtures:
   repositories:
-    stdlib: git://github.com/puppetlabs/puppetlabs-stdlib.git
-    runit:  git@github.com:erwbgy/puppet-runit.git
+    stdlib:    git://github.com/puppetlabs/puppetlabs-stdlib.git
+    runit:     git@github.com:erwbgy/puppet-runit.git
+    wait_for:  git@github.com:basti1302/puppet-wait-for.git
   symlinks:
     twemproxy: "#{source_dir}"
 

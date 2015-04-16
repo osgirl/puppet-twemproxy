@@ -2,7 +2,7 @@ define twemproxy::resource::nutcracker (
   $ensure               = 'present',
   $port                 = '22111',
   $nutcracker_hash      = 'fnv1a_64',
-  $nutcracker_hash_tag  = '/"{}/"',
+  $nutcracker_hash_tag  = '{}',
   $distribution         = 'ketama',
   $twemproxy_timeout    = '300',
   $auto_eject_hosts     = false,
@@ -61,6 +61,8 @@ define twemproxy::resource::nutcracker (
     service_ensure => $service_ensure
   }
 
+  notify { "Working with ${distribution} ${nutcracker_hash} on ${port}": }
+
   if ! defined(File['/etc/nutcracker']) {
     file { '/etc/nutcracker':
       ensure => 'directory',
@@ -98,10 +100,5 @@ define twemproxy::resource::nutcracker (
     content => template($service_template_os_specific),
     require => [ Anchor['twemproxy::install::end'], File[$log_dir], File[$pid_dir] ]
   } ->
-  exec { "/etc/init.d/${name} restart":
-    command => "/etc/init.d/${name} restart",
-    require => [ File["/etc/init.d/${name}"], File["/etc/nutcracker/${name}.yml"] ]
-  } ~>
   Service[$::twemproxy::params::default_service_name]
-
 }

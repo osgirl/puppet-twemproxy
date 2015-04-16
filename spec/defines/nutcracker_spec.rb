@@ -24,7 +24,7 @@ describe 'twemproxy::resource::nutcracker', :type=>'define' do
     let(:params) {{
       :port                 => 7777,
       :nutcracker_hash      => 'one_at_a_time',
-      :nutcracker_hash_tag  => 'banana',
+      :nutcracker_hash_tag  => '{banana}',
       :distribution         => 'random',
       :twemproxy_timeout    => 400,
       :auto_eject_hosts     => false,
@@ -73,7 +73,7 @@ describe 'twemproxy::resource::nutcracker', :type=>'define' do
     it { should contain_file('/etc/nutcracker/nutcracker.yml').with_content(/nutcracker:/) }    
     it { should contain_file('/etc/nutcracker/nutcracker.yml').with_content(/  listen: 0.0.0.0:7777/) }    
     it { should contain_file('/etc/nutcracker/nutcracker.yml').with_content(/  hash: one_at_a_time/) }    
-    it { should contain_file('/etc/nutcracker/nutcracker.yml').with_content(/  hash_tag: "banana"/) }    
+    it { should contain_file('/etc/nutcracker/nutcracker.yml').with_content(/  hash_tag: "{banana}"/) }    
     it { should contain_file('/etc/nutcracker/nutcracker.yml').with_content(/  distribution: random/) }    
     it { should contain_file('/etc/nutcracker/nutcracker.yml').with_content(/  timeout: 400/) }    
     it { should contain_file('/etc/nutcracker/nutcracker.yml').with_content(/  auto_eject_hosts: false/) }    
@@ -87,7 +87,7 @@ describe 'twemproxy::resource::nutcracker', :type=>'define' do
 
     it { should create_file('/etc/init.d/nutcracker') }
     it { should contain_file('/etc/init.d/nutcracker').with_content(/NAME=nutcracker/) }    
-    it { should contain_file('/etc/init.d/nutcracker').with_content(/ -s 2222 -d"/) }    
+    it { should contain_file('/etc/init.d/nutcracker').with_content(/ -s 22222 -d"/) }    
          
   end
 

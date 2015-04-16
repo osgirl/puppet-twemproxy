@@ -23,6 +23,7 @@ describe 'twemproxy::install', :type=>'class' do
         
     it { should compile.with_all_deps }        
     it { should contain_class('twemproxy::params') }
+    it { should contain_class('twemproxy::package') }
     it { should contain_class('twemproxy::autoconf') }
 
     it { should contain_package('automake') }

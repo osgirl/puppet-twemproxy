@@ -1,15 +1,17 @@
 require 'beaker-rspec'
 
-
 # mac users follow https://docs.docker.com/installation/mac/
-
 UNSUPPORTED_PLATFORMS = [ 'Windows', 'Solaris', 'AIX' ]
 
 unless ENV['RS_PROVISION'] == 'no' or ENV['BEAKER_provision'] == 'no'
-  # This will install the latest available package on el and deb based
-  # systems fail on windows and osx, and install via gem on other *nixes
-  foss_opts = { :default_action => 'gem_install' }
 
+  # This will install specific puppet version due to puppet-4.0.0 release
+  foss_opts = {
+    :version          => '3.6.1',
+    :facter_version   => '2.0.1',
+    :hiera_version    => '1.3.3',
+    :default_action   => 'gem_install' 
+  }
   if default.is_pe?; then install_pe; else install_puppet( foss_opts ); end
 
   hosts.each do |host|
