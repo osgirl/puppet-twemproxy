@@ -1,8 +1,8 @@
 class twemproxy::service (
-  $service_ensure = 'running',
-  $service_name   = undef,
-  $service_enable = true,
-  $service_manage = true,
+  $service_ensure,
+  $service_name,
+  $service_enable,
+  $service_manage
 ) {
 
   validate_re($service_ensure, '^(running|stopped)$',

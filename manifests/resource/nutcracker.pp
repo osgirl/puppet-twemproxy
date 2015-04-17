@@ -99,6 +99,6 @@ define twemproxy::resource::nutcracker (
     mode    => '0755',
     content => template($service_template_os_specific),
     require => [ Anchor['twemproxy::install::end'], File[$log_dir], File[$pid_dir] ]
-  } ->
+  } ~>
   Service[$::twemproxy::params::default_service_name]
 }

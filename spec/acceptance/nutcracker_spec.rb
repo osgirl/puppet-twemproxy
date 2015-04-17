@@ -47,7 +47,7 @@ describe 'default nutcracker service testing', :unless => UNSUPPORTED_PLATFORMS.
           distribution         => 'ketama',
           twemproxy_timeout    => '300',
 
-          auto_eject_hosts     => false,
+          auto_eject_hosts     => true,
           server_retry_timeout => '500',
           server_failure_limit => '1',
 
