@@ -10,9 +10,15 @@ define twemproxy::resource::nutcracker (
   $server_failure_limit = '3',
   $redis                = true,
   
+  $verbosity            = 6,  # 6-11
+
   $log_dir              = '/var/log/nutcracker',
   $pid_dir              = '/var/run/nutcracker',
-  $statsport            = '21111',
+
+  $statsaddress         = '127.0.0.1',
+  $statsport            = 22222,
+  $statsinterval        = 30000,  # msec
+
   $members              = undef,
 
   $service_enable       = true,
@@ -45,14 +51,24 @@ define twemproxy::resource::nutcracker (
     fail('$server_failure_limit must be an integer.')
   }
   validate_bool($redis)
+  if !is_integer($verbosity) {
+    fail('$verbosity must be an integer (6-11).')
+  }
   validate_absolute_path($log_dir)
   validate_absolute_path($pid_dir)
+  if !is_ip_address($statsaddress) {
+    fail('$statsaddress must be a valid IP adress.')
+  }
   if !is_integer($statsport) {
     fail('$statsport must be an integer.')
+  }
+  if !is_integer($statsinterval) {
+    fail('$statsinterval must be an integer.')
   }
   validate_array($members)
   validate_bool($service_enable)
   validate_bool($service_manage)
+  validate_string($service_ensure)
 
   class { '::twemproxy::service':
     service_name   => $name,

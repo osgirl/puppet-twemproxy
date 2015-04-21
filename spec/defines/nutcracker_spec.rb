@@ -30,7 +30,10 @@ describe 'twemproxy::resource::nutcracker', :type=>'define' do
       :auto_eject_hosts     => false,
       :server_retry_timeout => 1000,
       :server_failure_limit => 5,
-      :statsport            => 22222,
+      :verbosity            => 11,
+      :statsaddress         => '127.0.0.2',
+      :statsport            => 11111,
+      :statsinterval        => 10000,
       :members => [
            { 
               'ip'         => '127.0.0.1',
@@ -87,7 +90,8 @@ describe 'twemproxy::resource::nutcracker', :type=>'define' do
 
     it { should create_file('/etc/init.d/nutcracker') }
     it { should contain_file('/etc/init.d/nutcracker').with_content(/NAME=nutcracker/) }    
-    it { should contain_file('/etc/init.d/nutcracker').with_content(/ -s 22222 -d"/) }    
+    it { should contain_file('/etc/init.d/nutcracker').with_content(/ -a 127.0.0.2 -s 11111 -i 10000 -d"/) }    
+    it { should contain_file('/etc/init.d/nutcracker').with_content(/DAEMON_ARGS="-v 11/) }    
          
   end
 

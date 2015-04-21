@@ -51,10 +51,15 @@ describe 'default nutcracker service testing', :unless => UNSUPPORTED_PLATFORMS.
           server_retry_timeout => '500',
           server_failure_limit => '1',
 
+          verbosity            => 11,
+          
           log_dir              => '/var/log/nutcracker',
           pid_dir              => '/var/run/nutcracker',
           redis                => true,
-          statsport            => '22222',
+
+          statsaddress         => '127.0.0.2',
+          statsport            => 11111,
+          statsinterval        => 10000,
 
           members              =>  [
            { 
@@ -114,7 +119,7 @@ describe 'default nutcracker service testing', :unless => UNSUPPORTED_PLATFORMS.
       it { should be_listening }
     end
 
-    describe port('22222') do
+    describe port('11111') do
       it { should be_listening }
     end
    
