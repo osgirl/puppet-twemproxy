@@ -45,11 +45,11 @@ RSpec.configure do |c|
       # fixup github ssh
       shell("mkdir -p /root/.ssh && touch /root/.ssh/known_hosts && ssh-keyscan -H github.com >> /root/.ssh/known_hosts && chmod 600 /root/.ssh/known_hosts")
 
-      # twemproxy port data testing
-      shell("yum install -y telnet")
-
       # shame puppet does not know about tar on osx
       shell("gem install minitar --no-ri --no-rdoc")
+
+      # using librarian-puppet
+      shell("gem install librarian-puppet --no-ri --no-rdoc")
 
       # move to Puppetfile location and install deps
       shell("cd #{default['puppetpath']}/modules/twemproxy/files && librarian-puppet install --verbose --path #{default['puppetpath']}/modules")

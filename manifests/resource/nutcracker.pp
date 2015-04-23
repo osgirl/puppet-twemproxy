@@ -74,7 +74,8 @@ define twemproxy::resource::nutcracker (
     service_name   => $name,
     service_enable => $service_enable,
     service_manage => $service_manage,
-    service_ensure => $service_ensure
+    service_ensure => $service_ensure,
+    require        => Anchor['twemproxy::install::end']
   }
 
   notify { "Working with ${distribution} ${nutcracker_hash} on ${port}": }
@@ -108,7 +109,8 @@ define twemproxy::resource::nutcracker (
 
   file { "/etc/nutcracker/${name}.yml":
     ensure  => present,
-    content => template('twemproxy/pool.erb', 'twemproxy/members.erb')
+    content => template('twemproxy/pool.erb', 'twemproxy/members.erb'),
+    require => Anchor['twemproxy::install::end']
   } ->
   file { "/etc/init.d/${name}":
     ensure  => present,

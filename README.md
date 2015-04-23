@@ -58,6 +58,8 @@ The support version of twemproxy is 0.4.0 to take advantage of various improveme
 bundle install
 bundle exec rake test
 bundle exec rake beaker
+
+BEAKER_setfile=spec/acceptance/nodesets/centos-7-x64.yml bundle exec rake beaker
 ```
 
 ## Dependencies
