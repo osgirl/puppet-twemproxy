@@ -1,46 +1,71 @@
 Puppet-twemproxy
 ================
 
-This module manages [Twemproxy](http://www.github.com/twitter/twemproxy) package installation from source. It takes into consideration the needed packages depending on the Distro yso you can compile it.
+This module manages [twemproxy](http://www.github.com/twitter/twemproxy) package installation from source. It is based on and compatible with [puppet-twemproxy](https://forge.puppetlabs.com/wuakitv/twemproxy).
+
+The support version of twemproxy is 0.4.0 to take advantage of various improvements and in addtion working tests and addtional stats parameters have been added. 
+
+> Currently acceptance test using centos 6.5
+
+> Currently only supports **REDIS** and not memcached.
 
 ## USAGE
-### Creating a pool
-<pre>
-  twemproxy::resource::nutcracker {
-    'pool1':
-      ensure    => present,
-      members   => [
-        {
-          ip          => '127.0.0.1',
-          name        => 'server1',
-          redis_port  => '22121',
-          weight      => '1',
-        },
-        {
-          ip         => '127.0.0.1',
-          name       => 'server2',
-          redis_port => '6662',
-          weight     => '1',
-        }
-      ],
-      port       => 22121,
-      statsport  => 22122
-  }
-</pre>
 
-### Creating a resource to monitor
-<pre>
-twemproxy::resource::monit {
-    'twemprodweb':
-      country   => es,
-      port      => '22114',
-      statsport => '21214';
-  }
-</pre>
+```ruby
+        twemproxy::resource::nutcracker { 'redis-twemproxy':
+          port                 => '6379',
+          nutcracker_hash      => 'fnv1a_64',
+          nutcracker_hash_tag  => '{apple}',
+          distribution         => 'ketama',
+          auto_eject_hosts     => true,
+
+          verbosity            => 11,
+          
+          log_dir              => '/var/log/nutcracker',
+          pid_dir              => '/var/run/nutcracker',
+          redis                => true,
+
+          statsaddress         => '127.0.0.1',
+          statsport            => 22222,
+          statsinterval        => 10000,
+
+          members              =>  [
+           { 
+              'ip'         => 'myhost6390.domain',
+              'name'       => 'redis-6390',
+              'redis_port' => '6390',
+              'weight'     => '1'
+            },
+            { 
+              'ip'         => 'myhost6391.domain',
+              'name'       => 'redis-6391',
+              'redis_port' => '6391',
+              'weight'     => '1'
+            },
+            { 
+              'ip'         => 'myhost6391.domain',
+              'name'       => 'redis-6392',
+              'redis_port' => '6392',
+              'weight'     => '1'
+            }
+          ] 
+        }    
+```
+
+## Testing
+
+```bash
+bundle install
+bundle exec rake test
+bundle exec rake beaker
+
+BEAKER_setfile=spec/acceptance/nodesets/centos-7-x64.yml bundle exec rake beaker
+```
 
 ## Dependencies
 
-* `puppet-monit`: Ensure monit is installed and configured
+1. puppetlabs/stdlib
+
 
 ## Contributing
 

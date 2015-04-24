@@ -1,0 +1,9 @@
+HOSTS:
+  centos-6-puppet:
+    platform: centos-6-x64
+    image: pauldavidgilligan/ppeat-centos6
+    hypervisor: docker
+    docker_preserve_image: true
+CONFIG: 
+  log_level: verbose
+  type: foss

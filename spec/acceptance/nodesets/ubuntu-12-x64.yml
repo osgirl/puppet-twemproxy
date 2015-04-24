@@ -1,0 +1,9 @@
+HOSTS:
+  ubuntu-12-puppet:
+    platform: ubuntu-12.10-x64 
+    image: pauldavidgilligan/ppeat-ubuntu12
+    hypervisor: docker
+    docker_preserve_image: true
+CONFIG: 
+  log_level: verbose
+  type: foss
