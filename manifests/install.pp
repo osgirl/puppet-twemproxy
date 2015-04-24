@@ -7,7 +7,6 @@ class twemproxy::install (
 
   include stdlib
   include twemproxy::params
-  include twemproxy::package
   include twemproxy::autoconf
 
   anchor { 'twemproxy::install::begin': }
@@ -52,21 +51,23 @@ class twemproxy::install (
     logoutput => false,
     cwd       => "${prefix}/src/${resource}",
     creates   => "${prefix}/src/${resource}/configure",
-    require   => Anchor['twemproxy::autoconf::end']
+    require   => [ Anchor['twemproxy::autoconf::end'], Class['twemproxy::package'] ]
   } ->
   exec { "configure-${resource}":
     command   => $cfgcmd,
     provider  => shell,
     logoutput => false,
     cwd       => "${prefix}/src/${resource}",
-    creates   => "${prefix}/src/${resource}/config.status"
+    creates   => "${prefix}/src/${resource}/config.status",
+    require   => [ Anchor['twemproxy::autoconf::end'], Class['twemproxy::package'] ]
   } ->
   exec { "make-${resource}":
     command   => 'make && make install',
     provider  => shell,
     logoutput => false,
     cwd       => "${prefix}/src/${resource}",
-    creates   => "${prefix}/src/${resource}/src/nutcracker"
+    creates   => "${prefix}/src/${resource}/src/nutcracker",
+    require   => [ Anchor['twemproxy::autoconf::end'], Class['twemproxy::package'] ]
   } ->
   Anchor['twemproxy::install::end']
 
