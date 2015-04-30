@@ -2,7 +2,7 @@ require 'spec_helper'
 
 $node_name = 'nutcracker'
 
-describe 'twemproxy::resource::nutcracker', :type=>'define' do
+describe 'twemproxy::resource::nutcracker4', :type=>'define' do
 
   let(:node) { $node_name }
   let(:title) { $node_name }

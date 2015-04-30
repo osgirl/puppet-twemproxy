@@ -1,4 +1,4 @@
-define twemproxy::resource::nutcracker (
+define twemproxy::resource::nutcracker4 (
   $ensure               = 'present',
   $port                 = '22111',
   $nutcracker_hash      = 'fnv1a_64',
