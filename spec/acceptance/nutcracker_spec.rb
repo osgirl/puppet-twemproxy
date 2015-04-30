@@ -40,7 +40,7 @@ describe 'default nutcracker service testing', :unless => UNSUPPORTED_PLATFORMS.
           }
         }
 
-        twemproxy::resource::nutcracker { 'redis-twemproxy':
+        twemproxy::resource::nutcracker4 { 'redis-twemproxy':
           port                 => '7379',
           nutcracker_hash      => 'fnv1a_64',
           nutcracker_hash_tag  => '{}',
