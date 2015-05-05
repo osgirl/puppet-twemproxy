@@ -64,10 +64,10 @@ describe 'nutcracker service testing', :unless => UNSUPPORTED_PLATFORMS.include?
           nutcracker_hash      => 'one_at_a_time',
           nutcracker_hash_tag  => '{}',
           distribution         => 'ketama',
-          twemproxy_timeout    => '300',
+          twemproxy_timeout    => '30',
 
           auto_eject_hosts     => true,
-          server_retry_timeout => '500',
+          server_retry_timeout => '50',
           server_failure_limit => '1',
 
           verbosity            => 11,
@@ -125,9 +125,9 @@ describe 'nutcracker service testing', :unless => UNSUPPORTED_PLATFORMS.include?
    
   end
 
-  context 'should set and get test data from twemproxy' do
-    it 'sets redistest data' do
+  context 'should interact with redis' do
 
+    it 'when setting test data' do
       shell("printf '*3\r\n$3\r\nset\r\n$36\r\n080f21ec-479c-4019-ac0d-a84e838ba89c\r\n$12\r\ntrachybasalt\r\n' | socat - TCP:localhost:7379,shut-close", :acceptable_exit_codes => [0]) do |r|
         expect(r.stdout).to match(/\+OK/)
       end
@@ -167,10 +167,59 @@ describe 'nutcracker service testing', :unless => UNSUPPORTED_PLATFORMS.include?
       shell("printf '*3\r\n$3\r\nset\r\n$36\r\n54d42574-d305-4a1a-9cfc-95118fee8c43\r\n$12\r\nhomeomorphic\r\n' | socat - TCP:localhost:7379,shut-close", :acceptable_exit_codes => [0]) do |r|
         expect(r.stdout).to match(/\+OK/)
       end
-                  
     end  
 
-    it 'gets redistest data' do
+    it 'when getting test data' do
+      shell("printf '*2\r\n$3\r\nget\r\n$36\r\n080f21ec-479c-4019-ac0d-a84e838ba89c\r\n' | socat - TCP:localhost:7379,shut-close", :acceptable_exit_codes => [0]) do |r|
+        expect(r.stdout).to match(/trachybasalt/)
+      end
+
+      shell("printf '*2\r\n$3\r\nget\r\n$36\r\n2f0d04a2-39cb-49d3-ba13-70f2843ec2e2\r\n' | socat - TCP:localhost:7379,shut-close", :acceptable_exit_codes => [0]) do |r|
+        expect(r.stdout).to match(/crosscurrent/)
+      end
+
+      shell("printf '*2\r\n$3\r\nget\r\n$36\r\n67c7020d-e447-42ee-93f4-7e27982054fb\r\n' | socat - TCP:localhost:7379,shut-close", :acceptable_exit_codes => [0]) do |r|
+        expect(r.stdout).to match(/categorizing/)
+      end
+
+      shell("printf '*2\r\n$3\r\nget\r\n$36\r\n1f5afd0c-5ed3-472c-a2aa-94c04f423d60\r\n' | socat - TCP:localhost:7379,shut-close", :acceptable_exit_codes => [0]) do |r|
+        expect(r.stdout).to match(/instillation/)
+      end
+
+      shell("printf '*2\r\n$3\r\nget\r\n$36\r\na54c9e6b-53c5-40e4-bd4e-279e9638e3bb\r\n' | socat - TCP:localhost:7379,shut-close", :acceptable_exit_codes => [0]) do |r|
+        expect(r.stdout).to match(/nonpardoning/)
+      end
+
+      shell("printf '*2\r\n$3\r\nget\r\n$36\r\n6486ab96-4f8e-46cd-919f-c047e7fbe786\r\n' | socat - TCP:localhost:7379,shut-close", :acceptable_exit_codes => [0]) do |r|
+        expect(r.stdout).to match(/nutritionist/)
+      end
+
+      shell("printf '*2\r\n$3\r\nget\r\n$36\r\n602697c2-fb76-469a-96e5-d58d8034d745\r\n' | socat - TCP:localhost:7379,shut-close", :acceptable_exit_codes => [0]) do |r|
+        expect(r.stdout).to match(/prepurposing/)
+      end
+
+      shell("printf '*2\r\n$3\r\nget\r\n$36\r\n5876470c-7aac-4b06-9d82-c36341bbc9bf\r\n' | socat - TCP:localhost:7379,shut-close", :acceptable_exit_codes => [0]) do |r|
+        expect(r.stdout).to match(/chansonniers/)
+      end
+
+      shell("printf '*2\r\n$3\r\nget\r\n$36\r\n2f141d2d-dd49-405f-9b96-247044ce8778\r\n' | socat - TCP:localhost:7379,shut-close", :acceptable_exit_codes => [0]) do |r|
+        expect(r.stdout).to match(/secularising/)
+      end
+
+      shell("printf '*2\r\n$3\r\nget\r\n$36\r\n54d42574-d305-4a1a-9cfc-95118fee8c43\r\n' | socat - TCP:localhost:7379,shut-close", :acceptable_exit_codes => [0]) do |r|
+        expect(r.stdout).to match(/homeomorphic/)
+      end                  
+    end  
+
+  end  
+
+  context 'when disabling one redis node' do
+
+    it 'then node should stop' do
+      shell("service redis_6391 stop")
+    end
+
+    it 'and still be able to get test data' do
 
       shell("printf '*2\r\n$3\r\nget\r\n$36\r\n080f21ec-479c-4019-ac0d-a84e838ba89c\r\n' | socat - TCP:localhost:7379,shut-close", :acceptable_exit_codes => [0]) do |r|
         expect(r.stdout).to match(/trachybasalt/)
@@ -214,6 +263,6 @@ describe 'nutcracker service testing', :unless => UNSUPPORTED_PLATFORMS.include?
                   
     end  
 
-  end  
+  end
 
 end
