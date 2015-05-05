@@ -45,6 +45,11 @@ RSpec.configure do |c|
       # fixup github ssh
       shell("mkdir -p /root/.ssh && touch /root/.ssh/known_hosts && ssh-keyscan -H github.com >> /root/.ssh/known_hosts && chmod 600 /root/.ssh/known_hosts")
 
+      # test support yums
+      shell("yum install -y socat")
+
+      # test support gems
+
       # shame puppet does not know about tar on osx
       shell("gem install minitar --no-ri --no-rdoc")
 
