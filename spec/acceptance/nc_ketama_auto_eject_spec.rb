@@ -1,6 +1,6 @@
 require 'spec_helper_acceptance'
 
-describe 'nutcracker service testing', :unless => UNSUPPORTED_PLATFORMS.include?(fact('osfamily')) do
+describe 'nutcracker auto eject service testing', :unless => UNSUPPORTED_PLATFORMS.include?(fact('osfamily')) do
 
   context 'should run puppet code to install 3 localhost redis instances' do
 
@@ -47,7 +47,7 @@ describe 'nutcracker service testing', :unless => UNSUPPORTED_PLATFORMS.include?
 
   end
 
-  context 'should run puppet code to install ketama type distribution using one_at_a_time hash' do
+  context 'should run puppet code to install ketama type distribution using one_at_a_time hash with auto_eject' do
 
     it 'when provision with ketama' do
       pp = <<-EOS
@@ -105,8 +105,6 @@ describe 'nutcracker service testing', :unless => UNSUPPORTED_PLATFORMS.include?
       EOS
 
       apply_manifest(pp, :catch_failures => true)
-
-      shell("cat /var/log/nutcracker/redis-twemproxy.log")
 
     end
 
@@ -269,7 +267,9 @@ describe 'nutcracker service testing', :unless => UNSUPPORTED_PLATFORMS.include?
     end  
 
     it 'should recover all nodes' do
-      shell("cat /var/log/nutcracker/redis-twemproxy.log")
+      shell("curl -s 127.0.0.2:11111 | python -c 'import sys, json; print json.load(sys.stdin)[\"curr_connections\"]'", :acceptable_exit_codes => [0]) do |r|
+        expect(r.stdout).to match(/3/)
+      end
     end
 
   end
