@@ -70,7 +70,7 @@ describe 'nutcracker service testing', :unless => UNSUPPORTED_PLATFORMS.include?
           server_retry_timeout => '50',
           server_failure_limit => '1',
 
-          verbosity            => 11,
+          verbosity            => 8,
           
           log_dir              => '/var/log/nutcracker',
           pid_dir              => '/var/run/nutcracker',
@@ -215,11 +215,16 @@ describe 'nutcracker service testing', :unless => UNSUPPORTED_PLATFORMS.include?
 
   context 'when disabling one redis node' do
 
-    it 'then node should stop' do
+    it 'and simulating a redis reboot' do
       shell("service redis_6391 stop")
+      shell("sleep 1")
+      shell("tail -n 20 /var/log/nutcracker/redis-twemproxy.log")
+      shell("service redis_6391 start")
+      shell("sleep 1")
+      shell("tail -n 200 /var/log/nutcracker/redis-twemproxy.log")
     end
 
-    it 'and still be able to get test data' do
+    it 'should still be able to get test data' do
 
       shell("printf '*2\r\n$3\r\nget\r\n$36\r\n080f21ec-479c-4019-ac0d-a84e838ba89c\r\n' | socat - TCP:localhost:7379,shut-close", :acceptable_exit_codes => [0]) do |r|
         expect(r.stdout).to match(/trachybasalt/)
