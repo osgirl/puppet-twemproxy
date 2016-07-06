@@ -1,6 +1,6 @@
 {
   "name": "puppet-twemproxy",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "author": "Paul Gilligan <Paul.Gilligan@moneysupermarket.com>",
   "summary": "This module installs and configures Twemproxy.",
   "license": "Apache-2.0",
@@ -51,6 +51,6 @@
     {
       "name": "puppetlabs/stdlib",
       "version_requirement": ">= 4.3.2"
-    }      
+    }
   ]
 }
