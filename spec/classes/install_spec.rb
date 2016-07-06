@@ -20,22 +20,22 @@ describe 'twemproxy::install', :type=>'class' do
       :operatingsystemrelease => '6.5',
       :kernel => 'Linux'
     }}
-        
-    it { should compile.with_all_deps }        
+
+    it { should compile.with_all_deps }
     it { should contain_class('twemproxy::params') }
     it { should contain_class('twemproxy::package') }
     it { should contain_class('twemproxy::autoconf') }
 
     it { should contain_package('automake') }
     it { should contain_package('libtool') }
-  
-    it { should create_file('/usr/local/src') }
-    it { should create_file('/usr/local/src/twemproxy-0.4.0.tar.gz') }
 
-    it { should contain_exec('tar-xvfz-twemproxy-0.4.0') }
-    it { should contain_exec('autoconf-twemproxy-0.4.0') }
-    it { should contain_exec('configure-twemproxy-0.4.0') }
-    it { should contain_exec('make-twemproxy-0.4.0') }
+    it { should create_file('/usr/local/src') }
+    it { should create_file('/usr/local/src/twemproxy-0.4.1.tar.gz') }
+
+    it { should contain_exec('tar-xvfz-twemproxy-0.4.1') }
+    it { should contain_exec('autoconf-twemproxy-0.4.1') }
+    it { should contain_exec('configure-twemproxy-0.4.1') }
+    it { should contain_exec('make-twemproxy-0.4.1') }
 
   end
 
@@ -48,9 +48,9 @@ describe 'twemproxy::install', :type=>'class' do
     }}
     let(:params) {{
       :debug_mode   =>  true
-    }}      
-            
-    it { should compile.with_all_deps }        
+    }}
+
+    it { should compile.with_all_deps }
 
   end
 
