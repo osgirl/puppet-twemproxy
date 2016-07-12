@@ -9,7 +9,7 @@ define twemproxy::resource::nutcracker4 (
   $server_retry_timeout = '2000',
   $server_failure_limit = '3',
   $redis                = true,
-  
+
   $verbosity            = 6,  # 6-11
 
   $log_dir              = '/var/log/nutcracker',
@@ -18,6 +18,7 @@ define twemproxy::resource::nutcracker4 (
   $statsaddress         = '127.0.0.1',
   $statsport            = 22222,
   $statsinterval        = 30000,  # msec
+  $mbuf                 = 16384,  # default is 16384 bytes recommend 512 bytes
 
   $members              = undef,
 
@@ -64,6 +65,9 @@ define twemproxy::resource::nutcracker4 (
   }
   if !is_integer($statsinterval) {
     fail('$statsinterval must be an integer.')
+  }
+  if !is_integer($mbuf) {
+    fail('$mbuf must be an integer.')
   }
   validate_array($members)
   validate_bool($service_enable)
