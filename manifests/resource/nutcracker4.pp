@@ -36,38 +36,38 @@ define twemproxy::resource::nutcracker4 (
   #
 
   if !is_integer($port) {
-    fail('$port must be an integer.')
+    fail("$port must be an integer.")
   }
   validate_string($nutcracker_hash)
   validate_string($nutcracker_hash_tag)
   validate_string($distribution)
   if !is_integer($twemproxy_timeout) {
-    fail('$twemproxy_timeout must be an integer.')
+    fail("$twemproxy_timeout must be an integer.")
   }
   validate_bool($auto_eject_hosts)
   if !is_integer($server_retry_timeout) {
-    fail('$server_retry_timeout must be an integer.')
+    fail("$server_retry_timeout must be an integer.")
   }
   if !is_integer($server_failure_limit) {
-    fail('$server_failure_limit must be an integer.')
+    fail("$server_failure_limit must be an integer.")
   }
   validate_bool($redis)
   if !is_integer($verbosity) {
-    fail('$verbosity must be an integer (6-11).')
+    fail("$verbosity must be an integer (6-11).")
   }
   validate_absolute_path($log_dir)
   validate_absolute_path($pid_dir)
   if !is_ip_address($statsaddress) {
-    fail('$statsaddress must be a valid IP adress.')
+    fail("$statsaddress must be a valid IP adress.")
   }
   if !is_integer($statsport) {
-    fail('$statsport must be an integer.')
+    fail("$statsport must be an integer.")
   }
   if !is_integer($statsinterval) {
-    fail('$statsinterval must be an integer.')
+    fail("$statsinterval must be an integer.")
   }
   if !is_integer($mbuf) {
-    fail('$mbuf must be an integer.')
+    fail("$mbuf must be an integer.")
   }
   validate_array($members)
   validate_bool($service_enable)
