@@ -22,11 +22,11 @@ describe 'default twemproxy install testing', :unless => UNSUPPORTED_PLATFORMS.i
     end
   end
 
-  describe 'should install autoconf-2.64' do
-    it 'should create autoconf-2.64 data directory' do
-      shell("test -d /usr/local/src/autoconf-2.64", :acceptable_exit_codes => 0)
+  describe 'should install autoconf-2.65' do
+    it 'should create autoconf-2.65 data directory' do
+      shell("test -d /usr/local/src/autoconf-2.65", :acceptable_exit_codes => 0)
     end
-    it 'should install autoconf-2.64 to the correct location' do
+    it 'should install autoconf-2.65 to the correct location' do
       shell("test -f /usr/bin/autoconf", :acceptable_exit_codes => 0)
     end
   end

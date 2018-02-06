@@ -22,11 +22,11 @@ describe 'twemproxy::autoconf', :type=>'class' do
     }}
         
     it { should compile.with_all_deps }          
-    it { should create_file('/usr/local/src/autoconf-2.64.tar.gz') }
+    it { should create_file('/usr/local/src/autoconf-2.65.tar.gz') }
 
-    it { should contain_exec('tar-xvfz-autoconf-2.64') }
-    it { should contain_exec('configure-autoconf-2.64') }
-    it { should contain_exec('make-autoconf-2.64') }
+    it { should contain_exec('tar-xvfz-autoconf-2.65') }
+    it { should contain_exec('configure-autoconf-2.65') }
+    it { should contain_exec('make-autoconf-2.65') }
 
   end
 
